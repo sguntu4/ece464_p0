@@ -1,0 +1,8 @@
+#4 bits
+1u01 -> INPUT ERROR: INSUFFICIENT BITS
+
+#5 bits
+UU111 -> U1
+
+#8 bits
+11001100 -> 01
