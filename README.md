@@ -156,6 +156,8 @@ Bit/Right-to-left
 ### 4.4 basic_sim:
 * **Function that takes the updated circuit dictionary and runs a simulation on the given values. This function will 
 then outputs the result onto the output file**
+* The sim.py is used for Python 2, and sim_for_python3.py is used for Python 3. The only difference between
+two version is, the function "raw_input()" in sim.py is replaced by the function "input()" for Python 3.
 * Every gate called should be used, meaning the user may not call a floating gate or a gate with an 
 unspecified/unaccessible terminal. Otherwise, it will cause an infinite loop
 * The simulation will *pause* for each "progress." (a gate has been accessed/calculated)
