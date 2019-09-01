@@ -4,8 +4,16 @@ No. | Content
 :---: | :---
 **1** | [About](README.md#1-About)
 **2** | [Format](README.md#2-Format)
+• **2.1** | [○ NetList](README.md#21-NetList)
+• **2.2** | [○ Input(.txt)](README.md#22-Input-txt)
 **3** | [Error Detection](README.md#3-ERROR-detection)
+• **3.1** | [○ Netlist Errors](README.md#31-NetList-Errors)
+• **3.2** | [○ Input Errors](README.md#32-Input-Errors)
 **4** | [Functions](README.md#4-Functions)
+• **4.1** | [○ netRead](README.md#41-netRead)
+• **4.2** | [○ gateCalc](README.md#42-gateCalc)
+• **4.3** | [○ inputRead](README.md#43-inputRead)
+• **4.4** | [○ basic_sim](README.md#44-basic_sim)
 _____________
 ## 1. About:
     This is a logic simulator for the UIC class ECE 464: Testing and Reliability of Digital Systems.
@@ -15,6 +23,7 @@ ____________
     Guidelines on how to format the NetList and the input.txt files
 ### 2.1 NetList:
     # Comments are not read by the program
+    # No two INPUT, OUTPUT, or GATE calls must be in a single "line of code"
     # VAR_NAME is the name of the variable you want to name that variable
     # LOGIC can be substituted with "AND", "NAND", "OR", "NOR", "XOR", or "XNOR"
     INPUT(VAR_NAME0)
@@ -67,7 +76,8 @@ OUTPUT(e) # ERROR: User calls a floating output line that is not going to be acc
 # GATES:
 c = NOT(a)
 c = NOT(b) # ERROR: User calls a gate output line with an existing line already
-d = ABBA(c) # EROOR: User calls an unknown logic
+d = ABBA(c) # ERROR: User calls an unknown logic
+f = NOT(c) y = OR(f,d) # ERROR: User called 2 or more gates in one single "line of code" 
 ```
 
 ### 2.2 INPUT (.txt)
