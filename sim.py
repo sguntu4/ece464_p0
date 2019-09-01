@@ -186,7 +186,6 @@ def gateCalc(circuit, node):
 
         # if there is a 1 terminal, OR changes the output to 1. Otherwise, keep it at 0
         for term in terminals:
-            print(circuit[term])
             if circuit[term][3] == '1':
                 circuit[node][3] = '1'
                 break
