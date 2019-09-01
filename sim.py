@@ -123,7 +123,7 @@ def gateCalc(circuit, node):
     terminals = list(circuit[node][1])
 
     # If the node is an Inverter gate output, solve and return the output
-    if circuit[node][1] == "NOT":
+    if circuit[node][0] == "NOT":
         if circuit[terminals[0]][3] == '0':
             circuit[node][3] = '1'
         elif circuit[terminals[0]][3] == '1':
@@ -290,12 +290,12 @@ def inputRead(circuit, line):
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # FUNCTION: the actual simulation #
-def basic_sim(circuit, debug):
+def basic_sim(circuit):
     # QUEUE and DEQUEUE
     # Creating a queue, using a list of the gates
     queue = list(circuit["GATES"][1])
     i = 1
-    
+
     while True:
         i -= 1
         # If there's no more things in queue, no need to work on it
@@ -459,7 +459,7 @@ def main():
 
         print("...Done\n")
 
-        circuit = basic_sim(circuit, debug)
+        circuit = basic_sim(circuit)
 
         for y in circuit["OUTPUTS"][1]:
             if not circuit[y][2]:

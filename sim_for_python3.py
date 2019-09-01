@@ -126,7 +126,7 @@ def gateCalc(circuit, node):
     terminals = list(circuit[node][1])
 
     # If the node is an Inverter gate output, solve and return the output
-    if circuit[node][1] == "NOT":
+    if circuit[node][0] == "NOT":
         if circuit[terminals[0]][3] == '0':
             circuit[node][3] = '1'
         elif circuit[terminals[0]][3] == '1':

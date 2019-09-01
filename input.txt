@@ -3,7 +3,7 @@
 1u01
 
 #5 bits, with upper-case U's
-UU111
+uu111
 
 #8 bits, only 1's and 0's
 11001100
