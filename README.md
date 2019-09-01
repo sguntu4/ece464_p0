@@ -16,12 +16,12 @@ No. | Content
 • **4.4** | [○ basic_sim](README.md#44-basic_sim)
 _____________
 ## 1. About:
-    This is a logic simulator for the UIC class ECE 464: Testing and Reliability of Digital Systems.
+    Sample code of circuit simulator for Project 0, FAll 2019 UIC class ECE 464: Testing and Reliability of Digital Systems.
     
 ____________
-## 2. Format:
-    Guidelines on how to format the NetList and the input.txt files
-### 2.1 NetList:
+## 2. Format of files:
+    Guidelines on how to format the NetList benchmark and the input.txt files
+### 2.1 NetList benchmark (circuit file):
     # Comments are not read by the program
     # No two INPUT, OUTPUT, or GATE calls must be in a single "line of code"
     # VAR_NAME is the name of the variable you want to name that variable
@@ -80,7 +80,7 @@ d = ABBA(c) # ERROR: User calls an unknown logic
 f = NOT(c) y = OR(f,d) # ERROR: User called 2 or more gates in one single "line of code" 
 ```
 
-### 2.2 INPUT (.txt)
+### 2.2 INPUT vectors (.txt)
     # Comments are not read by the program
     # X can be substituted with 1, 0, or U
     # The number of X's must be equal or greater than the number of INPUTS in the NetList
@@ -108,7 +108,7 @@ AAAAAAAA
 ```
 
 _____________
-## 3. ERROR detection:
+## 3. ERRORs detected:
     Lists of errors that sim.py detects on user inputs, namely: the circuit benchmark file (netlist) and the input text
     file. 
 ### 3.1 NetList Errors:
