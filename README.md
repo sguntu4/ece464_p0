@@ -112,12 +112,12 @@ _____________
     Lists of errors that sim.py detects on user inputs, namely: the circuit benchmark file (netlist) and the input text
     file. 
 ### 3.1 NetList Errors:
-> "NETLIST ERROR: INPUT LINE "line_VAR_NAME" ALREADY EXISTS PREVIOUSLY IN NETLIST"
+> "NETLIST ERROR: INPUT LINE "wire_VAR_NAME" ALREADY EXISTS PREVIOUSLY IN NETLIST"
     
     Error occurs when user calls a new INPUT that already exists previously on the NetList, preventing 
     a single line hold two or more values
 
-> "NETLIST ERROR: GATE OUTPUT LINE "line_VAR_NAME" ALREADY EXISTS PREVIOUSLY IN NETLIST"
+> "NETLIST ERROR: GATE OUTPUT LINE "wire_VAR_NAME" ALREADY EXISTS PREVIOUSLY IN NETLIST"
 
     Error occurs when user calls a new LOGIC GATE output that already exists previously on the NetList, 
     preventing a single line hold two or more values
@@ -126,7 +126,7 @@ _____________
 
     Error occurs when user calls a LOGIC that is not "NOT", "AND", "NAND", "OR", "NOR", "XOR", or "XNOR"
 
-> "NETLIST ERROR: OUTPUT LINE "line_VAR_NAME" NOT ACCESSED" 
+> "NETLIST ERROR: OUTPUT LINE "wire_VAR_NAME" NOT ACCESSED" 
 
     Error occurs when user calls an OUTPUT line and at the end of the NetList, the OUTPUT line can not have 
     any value due to not being accessed
