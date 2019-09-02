@@ -354,9 +354,7 @@ def main():
     # Select netlist file
     while True:
         cktFile = "circuit.bench"
-        print("\nSelect netlist file:")
-        print("Read the " + cktFile + " file?")
-        print("If yes, press Enter. Otherwise, type in the filename")
+        print("\n circuit benchmark: use " + cktFile + "?" + " (Enter to accept or type filename)")
         userInput = input()
         if userInput == "":
             break
@@ -367,13 +365,13 @@ def main():
             else:
                 break
 
-    print("Reading the" + cktFile + " file...")
+    print("Reading " + cktFile + " ...")
     circuit = netRead("circuit.bench")
     if isinstance(circuit, str):
         print("\n" + circuit)
         print("\n...PROGRAM EXITS")
         exit()
-    print("...Done\n")
+    print("successful. \n")
 
     # creating a copy of the circuit for an easy reset
     netList = circuit
