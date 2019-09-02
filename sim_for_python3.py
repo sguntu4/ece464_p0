@@ -24,7 +24,7 @@ def netRead(netName):
     # dest = -999 # the destination bit of the current gate
     # logic = "" # the logic of the current gate
     # terms = [] # the terminals of the current gate
-    bitsNeeded = 0 # the number of inputs needed in this given circuit
+    inputBits = 0 # the number of inputs needed in this given circuit
 
     # Reading in the netlist file line by line
     for line in netFile:
@@ -61,10 +61,11 @@ def netRead(netName):
                 msg = "NETLIST ERROR: INPUT LINE \"" + line + "\" ALREADY EXISTS PREVIOUSLY IN NETLIST"
                 print(msg + "\n")
                 return msg
-            # Appending to the inputs array and update the bitsNeeded
+
+            # Appending to the inputs array and update the inputBits
             inputs.append(line)
             circuit[line] = ["INPUT", line, False, 'U']
-            bitsNeeded += 1
+            inputBits += 1
             print(circuit[line])
             continue
 
@@ -107,7 +108,7 @@ def netRead(netName):
         print(dest)
         print(circuit[dest])
 
-    circuit["BITS_NEEDED"] = ["Bits Needed", bitsNeeded]
+    circuit["INPUT_WIDTH"] = ["INPUT_N", inputBits]
     circuit["INPUTS"] = ["Inputs", inputs]
     circuit["OUTPUTS"] = ["Outputs", outputs]
     circuit["GATES"] = ["Gates", gates]
@@ -263,15 +264,15 @@ def gateCalc(circuit, node):
 # FUNCTION: Updating the circuit dictionary with the input line, and also resetting the gates and output lines
 def inputRead(circuit, line):
     # Checking if input bits are enough for the circuit
-    if len(line) < circuit["BITS_NEEDED"][1]:
+    if len(line) < circuit["INPUT_WIDTH"][1]:
         return -1
 
     # Getting the proper number of bits:
-    line = line[(len(line) - circuit["BITS_NEEDED"][1]):(len(line))]
+    line = line[(len(line) - circuit["INPUT_WIDTH"][1]):(len(line))]
 
     # Adding the inputs to the dictionary
-    # Since the for loop will start at the most significant bit, we start at bits_needed
-    i = circuit["BITS_NEEDED"][1] - 1
+    # Since the for loop will start at the most significant bit, we start at input width N
+    i = circuit["INPUT_WIDTH"][1] - 1
     inputs = list(circuit["INPUTS"][1])
     # dictionary item: [(bool) If accessed, (int) the value of each line, (int) layer number, (str) origin of U value]
     for bitVal in line:
@@ -457,15 +458,17 @@ def main():
         print(line + " -> " + output + " written into output file. \n")
         outputFile.write(" -> " + output + "\n")
 
-        
-        for eachLine in circuit:
-            print(eachLine)
-            
         # After each input line is finished, reset the circuit
-        print("circuit is:\n")
+        print("\n *** Now resetting circuit back to unknowns... \n")
         print(circuit)
-        print("newCircuit is: \n")
-        print(newCircuit)
+       
+        for key in circuit:
+            if (key[0:5]=="wire_"):
+                circuit[key][2] = False
+                circuit[key][3] = 'U'
+
+        print("\n circuit after resetting: \n")
+        print(circuit)
         
     outputFile.close
     #exit()
