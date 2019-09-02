@@ -449,14 +449,14 @@ def main():
             outputFile.write(" -> INPUT ERROR: INSUFFICIENT BITS" + "\n")
             # After each input line is finished, reset the netList
             circuit = newCircuit
-            print("...Done\n")
+            print("...move on to next input\n")
             continue
         elif circuit == -2:
             print("INPUT ERROR: INVALID INPUT VALUE/S")
             outputFile.write(" -> INPUT ERROR: INVALID INPUT VALUE/S" + "\n")
             # After each input line is finished, reset the netList
             circuit = newCircuit
-            print("...Done\n")
+            print("...move on to next input\n")
             continue
 
 
@@ -484,6 +484,7 @@ def main():
 
         print("\n circuit after resetting: \n")
         print(circuit)
+        print("\n*******************\n")
         
     outputFile.close
     #exit()
