@@ -16,10 +16,10 @@ OUTPUT(j)
 OUTPUT(k)
 
 # GATES:
-l = NOT(a)
-f = NAND(a, c)
 g = NAND(c, d)
 h = NAND(b, g)
+l = NOT(a)
+f = NAND(a, c)
 i = NAND(g, e)
 j = NAND(f, h)
 k = NAND(h, i)

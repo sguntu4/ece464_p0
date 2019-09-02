@@ -407,11 +407,9 @@ def main():
 
         # Do nothing else if empty lines, ...
         if (line == "\n"):
-            outputFile.write(line)
             continue
         # ... or any comments
         if (line[0] == "#"):
-            outputFile.write(line)
             continue
 
         # Removing the the newlines at the end and then output it to the txt file
