@@ -453,7 +453,7 @@ def main():
                 break
             output = str(circuit[y][3]) + output
 
-        print(line + " -> " + output "written into output file. \n")
+        print(line + " -> " + output + " written into output file. \n")
         outputFile.write(" -> " + output + "\n")
 
         # After each input line is finished, reset the circuit
