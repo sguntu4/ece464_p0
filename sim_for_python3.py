@@ -66,6 +66,7 @@ def netRead(netName):
             inputs.append(line)
             circuit[line] = ["INPUT", line, False, 'U']
             inputBits += 1
+            print(line)
             print(circuit[line])
             continue
 
@@ -104,14 +105,15 @@ def netRead(netName):
 
         # add the dest, logic and terminals to the gates list/table, with the dest as the key
         circuit[dest] = [logic, terms, False, 'U']
-        print("initialized ")
         print(dest)
         print(circuit[dest])
 
-    circuit["INPUT_WIDTH"] = ["INPUT_N", inputBits]
-    circuit["INPUTS"] = ["Inputs", inputs]
-    circuit["OUTPUTS"] = ["Outputs", outputs]
-    circuit["GATES"] = ["Gates", gates]
+    circuit["INPUT_WIDTH"] = ["input width:", inputBits]
+    circuit["INPUTS"] = ["Input list", inputs]
+    circuit["OUTPUTS"] = ["Output list", outputs]
+    circuit["GATES"] = ["Gate list", gates]
+
+    print(circuit["OUTPUTS"])
 
     return circuit
 
@@ -120,7 +122,6 @@ def netRead(netName):
 # FUNCTION: calculates the logic for each logic/gate
 def gateCalc(circuit, node):
     terminals = list(circuit[node][1])
-    print(circuit[node])
 
     # If the node is an Inverter gate output, solve and return the output
     if circuit[node][0] == "NOT":
@@ -324,9 +325,9 @@ def basic_sim(circuit):
                 print(circuit)
                 return circuit
 
-            print("Progress: " + curr + " = " + str(circuit[curr][3]) + " result of " + circuit[curr][0] + " of:")
+            print("Progress: updating " + curr + " = " + circuit[curr][3] + " as the output of " + circuit[curr][0] + " for:")
             for term in circuit[curr][1]:
-                print(term + " = " + str(circuit[term][3]))
+                print(term + " = " + circuit[term][3])
             print("\nPress Enter to Continue...")
             input()
 
@@ -460,7 +461,6 @@ def main():
 
         # After each input line is finished, reset the circuit
         print("\n *** Now resetting circuit back to unknowns... \n")
-        print(circuit)
        
         for key in circuit:
             if (key[0:5]=="wire_"):
