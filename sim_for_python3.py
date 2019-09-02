@@ -48,13 +48,13 @@ def netRead(netName):
 
         # Reading a INPUT :
         if (line[0:5] == "INPUT"):
-            # Removing everything but the numbers
+            # Removing everything but the line variable name
             line = line.replace("INPUT", "")
             line = line.replace("(", "")
             line = line.replace(")", "")
 
-            # Format the variable name to line_*VAR_NAME*
-            line = "line_" + line
+            # Format the variable name to wire_*VAR_NAME*
+            line = "wire_" + line
 
             # Error detection: line being made already exists
             if line in circuit:
@@ -76,12 +76,12 @@ def netRead(netName):
             line = line.replace(")", "")
 
             # Appending to the output array
-            outputs.append("line_" + line)
+            outputs.append("wire_" + line)
             continue
 
         # Reading a gate
         lineSpliced = line.split("=") # splicing the line at the equals sign to get the destination
-        dest = "line_" + lineSpliced[0]
+        dest = "wire_" + lineSpliced[0]
 
         # Error detection: line being made already exists
         if dest in circuit:
@@ -99,10 +99,12 @@ def netRead(netName):
         lineSpliced[1] = lineSpliced[1].replace(")", "")
         terms = lineSpliced[1].split(",")  # Splicing the the line again at each comma to the get the gate terminals
         # Turning each term into an integer before putting it into the circuit dictionary
-        terms = ["line_" + x for x in terms]
+        terms = ["wire_" + x for x in terms]
 
         # add the dest, logic and terminals to the gates list/table, with the dest as the key
         circuit[dest] = [logic, terms, False, 'U']
+        print("initialized ")
+        print(dest)
         print(circuit[dest])
 
     circuit["BITS_NEEDED"] = ["Bits Needed", bitsNeeded]
@@ -455,8 +457,11 @@ def main():
         print(line + " -> " + output + " written into output file. \n")
         outputFile.write(" -> " + output + "\n")
 
+        
+        for eachLine in circuit:
+            print(eachLine)
+            
         # After each input line is finished, reset the circuit
-        circuit = newCircuit
         print("circuit is:\n")
         print(circuit)
         print("newCircuit is: \n")
