@@ -345,10 +345,10 @@ def main():
 
     print("Circuit Simulator:")
 
-    # Select circuit benchmark file
+    # Select circuit benchmark file, default is circuit.bench
     while True:
-        cktFile = "circuit.bench"
-        print("circuit benchmark: use " + cktFile + "?" + " Enter to accept or type filename: ")
+        cktFile = "circuit.bench"   
+        print("\n Read circuit benchmark file: use " + cktFile + "?" + " Enter to accept or type filename: ")
         userInput = input()
         if userInput == "":
             break
@@ -359,18 +359,18 @@ def main():
             else:
                 break
 
-    print("Reading " + cktFile + " ...")
+    print("\n Reading " + cktFile + " ... \n")
     circuit = netRead(cktFile)
     print("\n Finished processing benchmark file and built netlist dictionary: \n")
     print(circuit)
 
-    # creating a copy of the circuit for an easy reset
+    # keep an initial (unassigned any value) copy of the circuit for an easy reset
     newCircuit = circuit
 
-    # Select input file
+    # Select input file, default is input.txt
     while True:
         inputName = "input.txt"
-        print("input vectors: use " + inputName + "?" + " Enter to accept or type filename: ")
+        print("\n Read input vector file: use " + inputName + "?" + " Enter to accept or type filename: ")
         userInput = input()
         if userInput == "":
 
@@ -382,10 +382,10 @@ def main():
             else:
                 break
 
-    # Select output file
+    # Select output file, default is output.txt
     while True:
         outputName = "output.txt"
-        print("output vectors: use " + outputName + "?" + " Enter to accept or type filename: ")
+        print("\n Write output file: use " + outputName + "?" + " Enter to accept or type filename: ")
         userInput = input()
         if userInput == "":
             break
@@ -396,7 +396,7 @@ def main():
     # Note: UI code;
     # **************************************************************************************************************** #
 
-    print("Simulating the" + inputName + " file and will output in" + outputName + "...")
+    print("\n *** Simulating the" + inputName + " file and will output in" + outputName + "*** \n")
     inputFile = open(inputName, "r")
     outputFile = open(outputName, "w")
 
@@ -419,9 +419,9 @@ def main():
         # Removing spaces
         line = line.replace(" ", "")
 
-        print("Now processing INPUT = " + line)
-
-        print("Updating circuit dictionary...")
+        print("\n before processing circuit dictionary...")
+        print(circuit)
+        print("\n ---> Now ready to simulate INPUT = " + line)
         circuit = inputRead(circuit, line)
         print(circuit)
 
@@ -442,7 +442,7 @@ def main():
 
 
         circuit = basic_sim(circuit)
-        print("\nFinished simulation: \n")
+        print("\n *** Finished simulation - resulting circuit: \n")
         print(circuit)
 
         for y in circuit["OUTPUTS"][1]:
@@ -451,11 +451,17 @@ def main():
                 break
             output = str(circuit[y][3]) + output
 
+        print("\n *** Summary of simulation: ")
         print(line + " -> " + output + " written into output file. \n")
         outputFile.write(" -> " + output + "\n")
 
         # After each input line is finished, reset the circuit
         circuit = newCircuit
+        print("circuit is:\n")
+        print(circuit)
+        print("newCircuit is: \n")
+        print(newCircuit)
+        
     outputFile.close
     #exit()
 
