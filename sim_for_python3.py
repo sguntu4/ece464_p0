@@ -50,7 +50,7 @@ def netRead(netName):
         # OUTPUT(y)
         # z=LOGIC(a,b,c,...)
 
-        # Reading the INPUTS :
+        # Reading a INPUT :
         if (line[0:5] == "INPUT"):
             # Removing everything but the numbers
             line = line.replace("INPUT", "")
@@ -65,24 +65,25 @@ def netRead(netName):
                 msg = "NETLIST ERROR: INPUT LINE \"" + line + "\" ALREADY EXISTS PREVIOUSLY IN NETLIST"
                 print(msg + "\n")
                 return msg
-            # Appending the number to the inputs array and update the bitsNeeded
+            # Appending to the inputs array and update the bitsNeeded
             inputs.append(line)
             circuit[line] = ["INPUT", line, False, 'U']
             bitsNeeded += 1
+            print(circuit[line])
             continue
 
-        # Reading the OUTPUTS
+        # Reading an OUTPUT
         if line[0:6] == "OUTPUT":
             # Removing everything but the numbers
             line = line.replace("OUTPUT", "")
             line = line.replace("(", "")
             line = line.replace(")", "")
 
-            # Appending the number to the inputs array
+            # Appending to the output array
             outputs.append("line_" + line)
             continue
 
-        # Reading the gates
+        # Reading a gate
         lineSpliced = line.split("=") # splicing the line at the equals sign to get the destination
         dest = "line_" + lineSpliced[0]
 
@@ -111,6 +112,7 @@ def netRead(netName):
 
         # add the dest, logic and terminals to the gates list/table, with the dest as the key
         circuit[dest] = [logic, terms, False, 'U']
+        print(circuit[dest])
 
     circuit["BITS_NEEDED"] = ["Bits Needed", bitsNeeded]
     circuit["INPUTS"] = ["Inputs", inputs]
@@ -354,14 +356,14 @@ def main():
     # Select netlist file
     while True:
         cktFile = "circuit.bench"
-        print("\n circuit benchmark: use " + cktFile + "?" + " (Enter to accept or type filename)")
+        print("circuit benchmark: use " + cktFile + "?" + " Enter to accept or type filename: ")
         userInput = input()
         if userInput == "":
             break
         else:
             cktFile = os.path.join(script_dir, userInput)
             if not os.path.isfile(cktFile):
-                print("File does not exist, please try again")
+                print("File does not exist. \n")
             else:
                 break
 
@@ -371,7 +373,7 @@ def main():
         print("\n" + circuit)
         print("\n...PROGRAM EXITS")
         exit()
-    print("successful. \n")
+    print("done. \n")
 
     # creating a copy of the circuit for an easy reset
     netList = circuit
