@@ -361,10 +361,11 @@ def main():
 
     print("Reading " + cktFile + " ...")
     circuit = netRead(cktFile)
-    print("\n Finished processing benchmark file. \n")
+    print("\n Finished processing benchmark file and built netlist dictionary: \n")
+    print(circuit)
 
     # creating a copy of the circuit for an easy reset
-    netList = circuit
+    newCircuit = circuit
 
     # Select input file
     while True:
@@ -372,6 +373,7 @@ def main():
         print("input vectors: use " + inputName + "?" + " Enter to accept or type filename: ")
         userInput = input()
         if userInput == "":
+
             break
         else:
             inputName = os.path.join(script_dir, userInput)
@@ -419,41 +421,45 @@ def main():
         # Removing spaces
         line = line.replace(" ", "")
 
-        print("For the INPUT: " + line)
+        print("Now processing INPUT = " + line)
 
         print("Updating circuit dictionary...")
         circuit = inputRead(circuit, line)
+        print(circuit)
 
         if circuit == -1:
             print("INPUT ERROR: INSUFFICIENT BITS")
             outputFile.write(" -> INPUT ERROR: INSUFFICIENT BITS" + "\n")
             # After each input line is finished, reset the netList
-            circuit = netList
+            circuit = newCircuit
             print("...Done\n")
             continue
         elif circuit == -2:
             print("INPUT ERROR: INVALID INPUT VALUE/S")
             outputFile.write(" -> INPUT ERROR: INVALID INPUT VALUE/S" + "\n")
             # After each input line is finished, reset the netList
-            circuit = netList
+            circuit = newCircuit
             print("...Done\n")
             continue
 
-        print("...Done\n")
 
         circuit = basic_sim(circuit)
+        print("\nFinished simulation: \n")
+        print(circuit)
 
         for y in circuit["OUTPUTS"][1]:
             if not circuit[y][2]:
                 output = "NETLIST ERROR: OUTPUT LINE \"" + y + "\" NOT ACCESSED"
                 break
             output = str(circuit[y][3]) + output
-        print(line + " -> " + output)
+
+        print(line + " -> " + output "written into output file. \n")
         outputFile.write(" -> " + output + "\n")
 
-        # After each input line is finished, reset the netList
-        circuit = netList
-    exit()
+        # After each input line is finished, reset the circuit
+        circuit = newCircuit
+    outputFile.close
+    #exit()
 
 
 if __name__ == "__main__":
