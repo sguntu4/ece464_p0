@@ -361,12 +361,7 @@ def main():
 
     print("Reading " + cktFile + " ...")
     circuit = netRead(cktFile)
-    #circuit = netRead("circuit.bench")
-    if isinstance(circuit, str):
-        print("\n" + circuit)
-        print("\n...PROGRAM EXITS")
-        exit()
-    print("done. \n")
+    print("\n Finished processing benchmark file. \n")
 
     # creating a copy of the circuit for an easy reset
     netList = circuit
@@ -374,35 +369,27 @@ def main():
     # Select input file
     while True:
         inputName = "input.txt"
-        print("\nSelect input file:")
-        print("Read the " + inputName + " file?")
-        print("If yes, press Enter. Otherwise, type in the filename")
+        print("input vectors: use " + inputName + "?" + " Enter to accept or type filename: ")
         userInput = input()
         if userInput == "":
             break
         else:
-            cktFile = os.path.join(script_dir, userInput)
-            if not os.path.isfile(cktFile):
-                print("File does not exist, please try again")
+            inputName = os.path.join(script_dir, userInput)
+            if not os.path.isfile(inputName):
+                print("File does not exist. \n")
             else:
                 break
 
     # Select output file
     while True:
         outputName = "output.txt"
-        print("\nSelect output file:")
-        print("Read the " + outputName + " file?")
-        print("If yes, press Enter. Otherwise, type in the filename" +
-              "(This will create a file, if the file does not exist)")
+        print("output vectors: use " + outputName + "?" + " Enter to accept or type filename: ")
         userInput = input()
         if userInput == "":
             break
         else:
-            cktFile = os.path.join(script_dir, userInput)
-            if not os.path.isfile(cktFile):
-                print("File does not exist, please try again")
-            else:
-                break
+            outputName = os.path.join(script_dir, userInput)
+            break
 
     # Note: UI code;
     # **************************************************************************************************************** #
