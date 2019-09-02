@@ -16,15 +16,16 @@ def netRead(netName):
     # Opening the netlist file:
     netFile = open(netName, "r")
 
-    # Variables: # (Commented-out variables means it will be called later on in the code) 
-    inputs = []  # array of the input bits
-    outputs = []  # array of the output bits
-    gates = []   # array of the gate bits
-    circuit = {}  # list of all the things in this circuit
-    # dest = -999 # the destination bit of the current gate
-    # logic = "" # the logic of the current gate
-    # terms = [] # the terminals of the current gate
-    inputBits = 0 # the number of inputs needed in this given circuit
+    # temporary variables
+    inputs = []     # array of the input wires
+    outputs = []    # array of the output wires
+    gates = []      # array of the gate list
+    inputBits = 0   # the number of inputs needed in this given circuit
+
+
+    # main variable to hold the circuit netlist, this is a dictionary in Python, where:
+    # key = wire name; value = a list of attributes of the wire
+    circuit = {}
 
     # Reading in the netlist file line by line
     for line in netFile:
@@ -46,7 +47,7 @@ def netRead(netName):
         # OUTPUT(y)
         # z=LOGIC(a,b,c,...)
 
-        # Reading a INPUT :
+        # Read a INPUT wire and add to circuit:
         if (line[0:5] == "INPUT"):
             # Removing everything but the line variable name
             line = line.replace("INPUT", "")
@@ -64,13 +65,17 @@ def netRead(netName):
 
             # Appending to the inputs array and update the inputBits
             inputs.append(line)
+
+            # add this wire as an entry to the circuit dictionary
             circuit[line] = ["INPUT", line, False, 'U']
+
             inputBits += 1
             print(line)
             print(circuit[line])
             continue
 
-        # Reading an OUTPUT
+        # Read an OUTPUT wire and add to the output array list
+        # Note that the same wire should also appear somewhere else as a GATE output
         if line[0:6] == "OUTPUT":
             # Removing everything but the numbers
             line = line.replace("OUTPUT", "")
@@ -81,18 +86,18 @@ def netRead(netName):
             outputs.append("wire_" + line)
             continue
 
-        # Reading a gate
-        lineSpliced = line.split("=") # splicing the line at the equals sign to get the destination
-        dest = "wire_" + lineSpliced[0]
+        # Read a gate output wire, and add to the circuit dictionary
+        lineSpliced = line.split("=") # splicing the line at the equals sign to get the gate output wire
+        gateOut = "wire_" + lineSpliced[0]
 
         # Error detection: line being made already exists
-        if dest in circuit:
-            msg = "NETLIST ERROR: GATE OUTPUT LINE \"" + dest + "\" ALREADY EXISTS PREVIOUSLY IN NETLIST"
+        if gateOut in circuit:
+            msg = "NETLIST ERROR: GATE OUTPUT LINE \"" + gateOut + "\" ALREADY EXISTS PREVIOUSLY IN NETLIST"
             print(msg+"\n")
             return msg
 
-        # Appending the dest name to the gates
-        gates.append(dest)
+        # Appending the dest name to the gate list
+        gates.append(gateOut)
 
         lineSpliced = lineSpliced[1].split("(") # splicing the line again at the "("  to get the gate logic
         logic = lineSpliced[0].upper()
@@ -103,25 +108,36 @@ def netRead(netName):
         # Turning each term into an integer before putting it into the circuit dictionary
         terms = ["wire_" + x for x in terms]
 
-        # add the dest, logic and terminals to the gates list/table, with the dest as the key
-        circuit[dest] = [logic, terms, False, 'U']
-        print(dest)
-        print(circuit[dest])
+        # add the gate output wire to the circuit dictionary with the dest as the key
+        circuit[gateOut] = [logic, terms, False, 'U']
+        print(gateOut)
+        print(circuit[gateOut])
 
+    # now after each wire is built into the circuit dictionary,
+    # add a few more non-wire items: input width, input array, output array, gate list
+    # for convenience
+    
     circuit["INPUT_WIDTH"] = ["input width:", inputBits]
     circuit["INPUTS"] = ["Input list", inputs]
     circuit["OUTPUTS"] = ["Output list", outputs]
     circuit["GATES"] = ["Gate list", gates]
 
+    print("\n bookkeeping items in circuit: \n")
+    print(circuit["INPUT_WIDTH"])
+    print(circuit["INPUTS"])
     print(circuit["OUTPUTS"])
+    print(circuit["GATES"])
+
 
     return circuit
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
-# FUNCTION: calculates the logic for each logic/gate
+# FUNCTION: calculates the output value for each logic gate
 def gateCalc(circuit, node):
-    terminals = list(circuit[node][1])
+    
+    # terminal will contain all the input wires of this logic gate (node)
+    terminals = list(circuit[node][1])  
 
     # If the node is an Inverter gate output, solve and return the output
     if circuit[node][0] == "NOT":
@@ -142,9 +158,9 @@ def gateCalc(circuit, node):
         # Initialize also a flag that detects a U to false
         unknownTerm = False  # This will become True if at least one unknown terminal is found
 
-        # if there is a 0 terminal, AND changes the output to 0. If there is an unknown terminal, mark the flag
+        # if there is a 0 at any input terminal, AND output is 0. If there is an unknown terminal, mark the flag
         # Otherwise, keep it at 1
-        for term in terminals:
+        for term in terminals:  
             if circuit[term][3] == '0':
                 circuit[node][3] = '0'
                 break
@@ -292,13 +308,13 @@ def inputRead(circuit, line):
 # FUNCTION: the actual simulation #
 def basic_sim(circuit):
     # QUEUE and DEQUEUE
-    # Creating a queue, using a list of the gates
+    # Creating a queue, using a list, containing all of the gates in the circuit
     queue = list(circuit["GATES"][1])
     i = 1
 
     while True:
         i -= 1
-        # If there's no more things in queue, no need to work on it
+        # If there's no more things in queue, done
         if len(queue) == 0:
             break
 
@@ -306,7 +322,7 @@ def basic_sim(circuit):
         curr = queue[0]
         queue.remove(curr)
 
-        # a flag to check if every terminal has been accessed
+        # initialize a flag, used to check if every terminal has been accessed
         term_has_value = True
 
         # Check if the terminals have been accessed
@@ -317,7 +333,6 @@ def basic_sim(circuit):
 
         if term_has_value:
             circuit[curr][2] = True
-
             circuit = gateCalc(circuit, curr)
 
             # ERROR Detection if LOGIC does not exist
