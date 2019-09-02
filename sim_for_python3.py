@@ -2,16 +2,12 @@ from __future__ import print_function
 import os
 
 # Function List:
-# 1. netRead: Reading Circuit gate-level netlist file
+# 1. netRead: read the benchmark file and build circuit netlist
 # 2. gateCalc: function that will work on the logic of each gate
 # 3. inputRead: function that will update the circuit dictionary made in netRead to hold the line values
 # 4. basic_sim: the actual simulation
 # 5. main: The main function
 
-
-# Defining a function to act as a const variable by returning a list of the LOGIC's
-def logicList():
-    return ["NOT", "AND", "NAND", "OR", "NOR", "XOR", "XNOR"]
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -99,12 +95,6 @@ def netRead(netName):
         lineSpliced = lineSpliced[1].split("(") # splicing the line again at the "("  to get the gate logic
         logic = lineSpliced[0].upper()
 
-        # Error detection: logic being called does not exist
-        if logic not in logicList():
-            msg =  "NETLIST ERROR: LOGIC \"" + logic + "\" DOES NOT EXIST"
-            print(msg + "\n")
-            return msg
-
         lineSpliced[1] = lineSpliced[1].replace(")", "")
         terms = lineSpliced[1].split(",")  # Splicing the the line again at each comma to the get the gate terminals
         # Turning each term into an integer before putting it into the circuit dictionary
@@ -126,6 +116,7 @@ def netRead(netName):
 # FUNCTION: calculates the logic for each logic/gate
 def gateCalc(circuit, node):
     terminals = list(circuit[node][1])
+    print(circuit[node])
 
     # If the node is an Inverter gate output, solve and return the output
     if circuit[node][0] == "NOT":
