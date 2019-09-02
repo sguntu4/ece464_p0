@@ -95,6 +95,7 @@ def netRead(netName):
         lineSpliced = lineSpliced[1].split("(") # splicing the line again at the "("  to get the gate logic
         logic = lineSpliced[0].upper()
 
+
         lineSpliced[1] = lineSpliced[1].replace(")", "")
         terms = lineSpliced[1].split(",")  # Splicing the the line again at each comma to the get the gate terminals
         # Turning each term into an integer before putting it into the circuit dictionary
@@ -344,7 +345,7 @@ def main():
 
     print("Circuit Simulator:")
 
-    # Select netlist file
+    # Select circuit benchmark file
     while True:
         cktFile = "circuit.bench"
         print("circuit benchmark: use " + cktFile + "?" + " Enter to accept or type filename: ")
@@ -359,7 +360,8 @@ def main():
                 break
 
     print("Reading " + cktFile + " ...")
-    circuit = netRead("circuit.bench")
+    circuit = netRead(cktFile)
+    #circuit = netRead("circuit.bench")
     if isinstance(circuit, str):
         print("\n" + circuit)
         print("\n...PROGRAM EXITS")
