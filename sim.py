@@ -8,7 +8,6 @@ import os
 # 4. basic_sim: the actual simulation
 # 5. main: The main function
 
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # FUNCTION: Neatly prints the Circuit Dictionary:
 def printCkt (circuit):
@@ -400,7 +399,9 @@ def main():
     print("\n Reading " + cktFile + " ... \n")
     circuit = netRead(cktFile)
     print("\n Finished processing benchmark file and built netlist dictionary: \n")
-    printCkt(circuit)
+    # Uncomment the following line, for the neater display of the function and then comment out print(circuit)
+    # printCkt(circuit)
+    print(circuit)
 
     # keep an initial (unassigned any value) copy of the circuit for an easy reset
     newCircuit = circuit
@@ -458,10 +459,15 @@ def main():
         line = line.replace(" ", "")
         
         print("\n before processing circuit dictionary...")
-        printCkt(circuit)
+        # Uncomment the following line, for the neater display of the function and then comment out print(circuit)
+        # printCkt(circuit)
+        print(circuit)
         print("\n ---> Now ready to simulate INPUT = " + line)
         circuit = inputRead(circuit, line)
-        printCkt(circuit)
+        # Uncomment the following line, for the neater display of the function and then comment out print(circuit)
+        # printCkt(circuit)
+        print(circuit)
+
 
         if circuit == -1:
             print("INPUT ERROR: INSUFFICIENT BITS")
@@ -481,7 +487,10 @@ def main():
 
         circuit = basic_sim(circuit)
         print("\n *** Finished simulation - resulting circuit: \n")
-        printCkt(circuit)
+        # Uncomment the following line, for the neater display of the function and then comment out print(circuit)
+        # printCkt(circuit)
+        print(circuit)
+
 
         for y in circuit["OUTPUTS"][1]:
             if not circuit[y][2]:
@@ -502,7 +511,10 @@ def main():
                 circuit[key][3] = 'U'
 
         print("\n circuit after resetting: \n")
-        printCkt(circuit)
+        # Uncomment the following line, for the neater display of the function and then comment out print(circuit)
+        # printCkt(circuit)
+        print(circuit)
+
         print("\n*******************\n")
         
     outputFile.close
