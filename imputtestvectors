@@ -1,0 +1,6 @@
+select  inputs         outputs
+C1  C0   X0 X1 X2 X3   M
+0    0   1  1  1  1     
+0    1   1  1  1  1 
+1    0   1  1  1  1
+1    1   1  1  1  1   
